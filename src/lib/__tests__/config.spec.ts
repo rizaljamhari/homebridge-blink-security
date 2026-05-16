@@ -26,6 +26,8 @@ describe('normalizeConfig', () => {
       expect(opts.noTemperatureSensor).toBe(false);
       expect(opts.noEnabledSwitch).toBe(false);
       expect(opts.noPrivacySwitch).toBe(false);
+      expect(opts.noCameras).toBe(false);
+      expect(opts.noDoorbells).toBe(false);
       expect(opts.liveView).toBe(true);
       expect(opts.lvSave).toBe(false);
       expect(opts.noThumbnailRefresh).toBe(false);
@@ -234,6 +236,16 @@ describe('normalizeConfig', () => {
     it('maps hide-privacy-switch to noPrivacySwitch', () => {
       const opts = normalizeConfig(makeConfig({ 'hide-privacy-switch': true }));
       expect(opts.noPrivacySwitch).toBe(true);
+    });
+
+    it('maps hide-cameras to noCameras', () => {
+      const opts = normalizeConfig(makeConfig({ 'hide-cameras': true }));
+      expect(opts.noCameras).toBe(true);
+    });
+
+    it('maps hide-doorbells to noDoorbells', () => {
+      const opts = normalizeConfig(makeConfig({ 'hide-doorbells': true }));
+      expect(opts.noDoorbells).toBe(true);
     });
 
     it('maps enable-liveview to liveView', () => {

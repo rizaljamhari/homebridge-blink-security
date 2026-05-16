@@ -9,6 +9,8 @@ export interface BlinkSecurityConfig extends PlatformConfig {
   'hide-temperature-sensor'?: boolean;
   'hide-enabled-switch'?: boolean;
   'hide-privacy-switch'?: boolean;
+  'hide-cameras'?: boolean;
+  'hide-doorbells'?: boolean;
   'enable-liveview'?: boolean;
   'lv-save'?: boolean;
   'disable-thumbnail-refresh'?: boolean;
@@ -30,6 +32,8 @@ export interface BlinkOptions {
   noTemperatureSensor: boolean;
   noEnabledSwitch: boolean;
   noPrivacySwitch: boolean;
+  noCameras: boolean;
+  noDoorbells: boolean;
   liveView: boolean;
   lvSave: boolean;
   noThumbnailRefresh: boolean;
@@ -52,6 +56,8 @@ export const DEFAULT_OPTIONS: BlinkOptions = {
   noTemperatureSensor: false,
   noEnabledSwitch: false,
   noPrivacySwitch: false,
+  noCameras: false,
+  noDoorbells: false,
   liveView: true,
   lvSave: false,
   noThumbnailRefresh: false,
@@ -103,6 +109,8 @@ export function normalizeConfig(config: BlinkSecurityConfig): BlinkOptions {
   checkBoolean('hide-temperature-sensor', 'noTemperatureSensor');
   checkBoolean('hide-enabled-switch', 'noEnabledSwitch');
   checkBoolean('hide-privacy-switch', 'noPrivacySwitch');
+  checkBoolean('hide-cameras', 'noCameras');
+  checkBoolean('hide-doorbells', 'noDoorbells');
   checkBoolean('enable-liveview', 'liveView');
   checkBoolean('lv-save', 'lvSave');
   checkBoolean('disable-thumbnail-refresh', 'noThumbnailRefresh');
