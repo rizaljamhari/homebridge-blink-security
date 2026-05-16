@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.0](https://github.com/BitWise-0x/homebridge-blink-security/compare/v1.8.0...v1.9.0) (2026-05-16)
+
+### Features
+
+* **config:** add ability to hide cameras and doorbells ([#31](https://github.com/BitWise-0x/homebridge-blink-security/issues/31)) ([0455adf](https://github.com/BitWise-0x/homebridge-blink-security/commit/0455adf7ef1e2b2e98e2c3e1068ae708b1e00ac8))
+* **config:** Blink refresh polling interval setting ([#32](https://github.com/BitWise-0x/homebridge-blink-security/issues/32)) ([68116f5](https://github.com/BitWise-0x/homebridge-blink-security/commit/68116f530ec9ac9e80a3fa5134b7f7a98d17a5b1))
+
 ## [1.8.0](https://github.com/BitWise-0x/homebridge-blink-security/compare/v1.7.1...v1.8.0) (2026-04-16)
 
 ### Features
