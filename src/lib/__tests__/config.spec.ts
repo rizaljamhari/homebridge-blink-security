@@ -31,6 +31,7 @@ describe('normalizeConfig', () => {
       expect(opts.liveView).toBe(true);
       expect(opts.lvSave).toBe(false);
       expect(opts.noThumbnailRefresh).toBe(false);
+      expect(opts.blinkStatusPollingSeconds).toBe(10);
       expect(opts.snapshotSeconds).toBe(3600);
       expect(opts.statusPollingSeconds).toBe(30);
       expect(opts.motionPollingSeconds).toBe(15);
@@ -256,6 +257,13 @@ describe('normalizeConfig', () => {
     it('maps lv-save to lvSave', () => {
       const opts = normalizeConfig(makeConfig({ 'lv-save': true }));
       expect(opts.lvSave).toBe(true);
+    });
+
+    it('maps blink-status-polling-seconds to blinkStatusPollingSeconds', () => {
+      const opts = normalizeConfig(
+        makeConfig({ 'blink-status-polling-seconds': 60 })
+      );
+      expect(opts.blinkStatusPollingSeconds).toBe(60);
     });
 
     it('maps camera-status-polling-seconds to statusPollingSeconds', () => {
