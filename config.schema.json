@@ -88,10 +88,11 @@
       "blink-status-polling-seconds": {
         "title": "Blink Status Polling (seconds)",
         "type": "integer",
+        "default": 10,
         "minimum": 1,
         "maximum": 300,
         "placeholder": "10",
-        "description": "Interval (seconds) between Blink system refreshes. Default is 10 seconds and this is the minimum recommended value."
+        "description": "Interval (seconds) between Blink system refreshes (range 1–300). Default 10. Higher values reduce API load but delay arm/disarm state updates."
       },
       "camera-thumbnail-refresh-seconds": {
         "title": "Camera Thumbnail Refresh (seconds)",
