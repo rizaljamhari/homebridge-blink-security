@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.1](https://github.com/BitWise-0x/homebridge-blink-security/compare/v1.9.0...v1.9.1) (2026-05-16)
+
+### Bug Fixes
+
+* **schema:** set default for blink polling slider and update description ([c87b163](https://github.com/BitWise-0x/homebridge-blink-security/commit/c87b163eb23644d3ec8abc2296d769a736ca5142))
+
 ## [1.9.0](https://github.com/BitWise-0x/homebridge-blink-security/compare/v1.8.0...v1.9.0) (2026-05-16)
 
 ### Features
