@@ -181,16 +181,23 @@ export class DoorbellAccessory {
   }
 
   private setupDoorbellService(): void {
+    const existingDoorbellService = this.accessory.getServiceById(
+      this.Service.Doorbell,
+      `doorbell.${this.doorbell.serial}`
+    );
+
     const name = `${this.doorbell.name} Doorbell`;
     this.doorbellService =
-      this.accessory.getService(this.Service.Doorbell) ||
+      existingDoorbellService ||
       this.accessory.addService(
         this.Service.Doorbell,
         name,
         `doorbell.${this.doorbell.serial}`
       );
 
-    this.applyConfiguredName(this.doorbellService, name);
+    if (!existingDoorbellService) {
+      this.applyConfiguredName(this.doorbellService, name);
+    }
 
     this.doorbellService
       .getCharacteristic(this.Characteristic.ProgrammableSwitchEvent)
@@ -210,16 +217,23 @@ export class DoorbellAccessory {
   }
 
   private setupMotionSensor(): void {
+    const existingMotionService = this.accessory.getServiceById(
+      this.Service.MotionSensor,
+      `motion.${this.doorbell.serial}`
+    );
+
     const name = `${this.doorbell.name} Motion`;
     const motionService =
-      this.accessory.getService(this.Service.MotionSensor) ||
+      existingMotionService ||
       this.accessory.addService(
         this.Service.MotionSensor,
         name,
         `motion.${this.doorbell.serial}`
       );
 
-    this.applyConfiguredName(motionService, name);
+    if (!existingMotionService) {
+      this.applyConfiguredName(motionService, name);
+    }
 
     motionService
       .getCharacteristic(this.Characteristic.MotionDetected)
@@ -227,16 +241,23 @@ export class DoorbellAccessory {
   }
 
   private setupEnabledSwitch(): void {
+    const existingSwitchService = this.accessory.getServiceById(
+      this.Service.Switch,
+      `enabled.${this.doorbell.serial}`
+    );
+
     const name = `${this.doorbell.name} Motion Enabled`;
     const service =
-      this.accessory.getService(`enabled.${this.doorbell.serial}`) ||
+      existingSwitchService ||
       this.accessory.addService(
         this.Service.Switch,
         name,
         `enabled.${this.doorbell.serial}`
       );
 
-    this.applyConfiguredName(service, name);
+    if (!existingSwitchService) {
+      this.applyConfiguredName(service, name);
+    }
 
     service
       .getCharacteristic(this.Characteristic.On)
@@ -247,16 +268,23 @@ export class DoorbellAccessory {
   }
 
   private setupPrivacySwitch(): void {
+    const existingSwitchService = this.accessory.getServiceById(
+      this.Service.Switch,
+      `privacy.${this.doorbell.serial}`
+    );
+
     const name = `${this.doorbell.name} Privacy Mode`;
     const service =
-      this.accessory.getService(`privacy.${this.doorbell.serial}`) ||
+      existingSwitchService ||
       this.accessory.addService(
         this.Service.Switch,
         name,
         `privacy.${this.doorbell.serial}`
       );
 
-    this.applyConfiguredName(service, name);
+    if (!existingSwitchService) {
+      this.applyConfiguredName(service, name);
+    }
 
     service
       .getCharacteristic(this.Characteristic.On)
@@ -267,16 +295,23 @@ export class DoorbellAccessory {
   }
 
   private setupRecordClipSwitch(): void {
+    const existingSwitchService = this.accessory.getServiceById(
+      this.Service.Switch,
+      `record.${this.doorbell.serial}`
+    );
+
     const name = `${this.doorbell.name} Record Clip`;
     const service =
-      this.accessory.getService(`record.${this.doorbell.serial}`) ||
+      existingSwitchService ||
       this.accessory.addService(
         this.Service.Switch,
         name,
         `record.${this.doorbell.serial}`
       );
 
-    this.applyConfiguredName(service, name);
+    if (!existingSwitchService) {
+      this.applyConfiguredName(service, name);
+    }
 
     service
       .getCharacteristic(this.Characteristic.On)
