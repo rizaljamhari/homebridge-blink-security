@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.0](https://github.com/BitWise-0x/homebridge-blink-security/compare/v1.9.1...v1.10.0) (2026-05-23)
+
+### Features
+
+* **logs:** use routineInfo for additional routine logging ([#37](https://github.com/BitWise-0x/homebridge-blink-security/issues/37)) ([fea8402](https://github.com/BitWise-0x/homebridge-blink-security/commit/fea840258e4cf3a795e43e71d13129a2b7a3e0e4))
+
+### Bug Fixes
+
+* **naming:** custom accessory names are reverting on plugin restart ([#36](https://github.com/BitWise-0x/homebridge-blink-security/issues/36)) ([d383627](https://github.com/BitWise-0x/homebridge-blink-security/commit/d383627bb9a30ed244d69904d8a00696ab598b12))
+
 ## [1.9.1](https://github.com/BitWise-0x/homebridge-blink-security/compare/v1.9.0...v1.9.1) (2026-05-16)
 
 ### Bug Fixes
