@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.1](https://github.com/BitWise-0x/homebridge-blink-security/compare/v1.10.0...v1.10.1) (2026-06-09)
+
+### Bug Fixes
+
+* **camera:** route "superior" floodlight motion to owl endpoint ([#40](https://github.com/BitWise-0x/homebridge-blink-security/issues/40)) ([494bb9a](https://github.com/BitWise-0x/homebridge-blink-security/commit/494bb9a6214aa41ae9ef27999aad8589f9b48c09))
+
 ## [1.10.0](https://github.com/BitWise-0x/homebridge-blink-security/compare/v1.9.1...v1.10.0) (2026-05-23)
 
 ### Features
