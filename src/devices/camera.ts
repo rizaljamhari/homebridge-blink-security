@@ -129,7 +129,7 @@ export class BlinkCamera extends BlinkDevice {
   }
 
   get isCameraMini(): boolean {
-    return ['owl', 'hawk', 'superior_owl'].includes(this.model ?? '');
+    return ['owl', 'hawk', 'superior'].includes(this.model ?? '');
   }
 
   get isHawk(): boolean {
@@ -137,7 +137,7 @@ export class BlinkCamera extends BlinkDevice {
   }
 
   get isFloodlight(): boolean {
-    return this.model === 'superior_owl';
+    return this.model === 'superior';
   }
 
   get temperature(): number | null {

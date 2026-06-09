@@ -79,9 +79,11 @@ export class Blink {
     const ttl = force ? 0.1 : this.statusPoll;
     const homescreen = await this.api.getAccountHomescreen(ttl);
 
+    const owls = homescreen.owls ?? [];
+    const owlIds = new Set(owls.map(o => o.id));
     const allCameras: HomescreenCamera[] = [
       ...(homescreen.cameras ?? []),
-      ...(homescreen.owls ?? []),
+      ...owls,
     ];
 
     let allDoorbells: HomescreenCamera[] = [
@@ -295,6 +297,24 @@ export class Blink {
         allDoorbells.map(d => [d.id, this.createDoorbell(d)])
       );
       this.sirens = new Map(allSirens.map(s => [s.id, this.createSiren(s)]));
+
+      for (const camera of this.cameras.values()) {
+        this.log.debug(
+          `Camera ${camera.cameraID} "${camera.data.name}" type=${camera.model}, isCameraMini=${camera.isCameraMini}`
+        );
+        // A device in the homescreen `owls` array that isn't recognized as a
+        // mini will be routed to the legacy camera endpoint and 404 (issue #40,
+        // the "superior" floodlight). Warn so a new owl-family device type is
+        // visible without needing a raw homescreen dump.
+        if (owlIds.has(camera.cameraID) && !camera.isCameraMini) {
+          this.log.warn(
+            `Camera ${camera.cameraID} "${camera.data.name}" has unrecognized ` +
+              `owl type "${camera.model}"; motion enable/disable may fail. ` +
+              'Please report this type at ' +
+              'https://github.com/BitWise-0x/homebridge-blink-security/issues'
+          );
+        }
+      }
     }
 
     // Check for doorbell press events
@@ -327,13 +347,21 @@ export class Blink {
     const camera = this.cameras.get(cameraID);
 
     let cmd: () => Promise<CommandResponse>;
+    let route: string;
     if (camera?.isCameraMini) {
       cmd = () => this.api.updateOwlSettings(networkID, cameraID, { enabled });
+      route = 'owl config';
     } else if (enabled) {
       cmd = () => this.api.enableCameraMotion(networkID, cameraID);
+      route = 'camera enable';
     } else {
       cmd = () => this.api.disableCameraMotion(networkID, cameraID);
+      route = 'camera disable';
     }
+    this.log.debug(
+      `setCameraMotionSensorState camera ${cameraID} (type=${camera?.model}) ` +
+        `enabled=${enabled} → ${route} endpoint`
+    );
 
     await this.api.lock(
       `setCameraMotionSensorState(${networkID}, ${cameraID})`,
