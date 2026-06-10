@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.2](https://github.com/BitWise-0x/homebridge-blink-security/compare/v1.10.1...v1.10.2) (2026-06-10)
+
+### Bug Fixes
+
+* **auth:** surface signin response detail on unexpected status ([9bf7b04](https://github.com/BitWise-0x/homebridge-blink-security/commit/9bf7b045231ec0e94a40da573cb9ece5c080b005)), closes [#41](https://github.com/BitWise-0x/homebridge-blink-security/issues/41)
+
 ## [1.10.1](https://github.com/BitWise-0x/homebridge-blink-security/compare/v1.10.0...v1.10.1) (2026-06-09)
 
 ### Bug Fixes
