@@ -444,6 +444,38 @@ describe('BlinkAuthClient', () => {
     });
   });
 
+  describe('authenticate diagnostics', () => {
+    const csrfPage =
+      '<script id="oauth-args" type="application/json">{"csrf-token":"csrf-abc"}</script>';
+
+    it('surfaces body and headers when signin returns an unexpected status', async () => {
+      (fs.existsSync as ReturnType<typeof vi.fn>).mockImplementation(
+        (p: string) =>
+          typeof p === 'string' && p.includes('hardware_id') ? true : false
+      );
+      (fs.readFileSync as ReturnType<typeof vi.fn>).mockImplementation(
+        (p: string) =>
+          typeof p === 'string' && p.includes('hardware_id') ? 'hw-id' : ''
+      );
+
+      const client = new BlinkAuthClient('/tmp/test');
+
+      // Call 1: initOAuthSession (GET /authorize → signin page with CSRF)
+      mockHttpsRequest(200, csrfPage);
+      // Call 2: submitCredentials (POST /signin) returns an unexpected 202
+      mockHttpsRequest(
+        202,
+        '{"verification":"pending"}',
+        { 'content-type': 'application/json' },
+        '/oauth/v2/2fa'
+      );
+
+      await expect(client.authenticate('e@x.com', 'pw')).rejects.toThrow(
+        /status 202.*diagnostic.*verification.*pending/s
+      );
+    });
+  });
+
   describe('refreshTokens', () => {
     it('updates session on success', async () => {
       const sessionData = {

@@ -90,6 +90,32 @@ interface HttpResponse {
 
 const MAX_REDIRECTS = 5;
 
+// Diagnostic: condense a signin response into a single log-safe line.
+// Used to surface the body/headers behind an unexpected status (e.g. 202),
+// where Blink's contract is undocumented and we can't tell the next step
+// from the status code alone. No credentials are present in this response.
+function summarizeSigninResponse(res: HttpResponse): string {
+  const interestingHeaders = [
+    'location',
+    'www-authenticate',
+    'x-blink-2fa',
+    'x-amzn-remapped-content-length',
+    'content-type',
+  ];
+  const headers = interestingHeaders
+    .map(h => {
+      const v = res.headers[h];
+      return v === undefined
+        ? undefined
+        : `${h}=${Array.isArray(v) ? v.join(',') : v}`;
+    })
+    .filter((v): v is string => v !== undefined)
+    .join(' ');
+
+  const body = (res.body ?? '').trim().slice(0, 500);
+  return `status=${res.statusCode}${headers ? ` headers[${headers}]` : ''} body=${body || '(empty)'}`;
+}
+
 function httpsRequest(
   url: string,
   options: {
@@ -288,7 +314,10 @@ export class BlinkAuthClient {
     this.saveSession();
 
     // Step 3: Submit credentials
-    const credentialStatus = await this.submitCredentials(email, password);
+    const { statusCode: credentialStatus, diag } = await this.submitCredentials(
+      email,
+      password
+    );
 
     // 412 = 2FA required
     if (credentialStatus === 412) {
@@ -306,7 +335,8 @@ export class BlinkAuthClient {
     }
 
     throw new Error(
-      `Blink OAuth sign-in failed with status ${credentialStatus}`
+      `Blink OAuth sign-in failed with status ${credentialStatus}. ` +
+        `Unrecognized signin response (diagnostic): ${diag}`
     );
   }
 
@@ -339,7 +369,10 @@ export class BlinkAuthClient {
     }
 
     // Step 3: Submit credentials (expect 412 for 2FA)
-    const credentialStatus = await this.submitCredentials(email, password);
+    const { statusCode: credentialStatus, diag } = await this.submitCredentials(
+      email,
+      password
+    );
 
     if ([301, 302, 200].includes(credentialStatus)) {
       // No 2FA needed — exchange auth code directly
@@ -349,7 +382,8 @@ export class BlinkAuthClient {
 
     if (credentialStatus !== 412) {
       throw new Error(
-        `Blink OAuth sign-in failed with status ${credentialStatus}`
+        `Blink OAuth sign-in failed with status ${credentialStatus}. ` +
+          `Unrecognized signin response (diagnostic): ${diag}`
       );
     }
 
@@ -499,7 +533,7 @@ export class BlinkAuthClient {
   private async submitCredentials(
     email: string,
     password: string
-  ): Promise<number> {
+  ): Promise<{ statusCode: number; diag: string }> {
     const signinBody = new URLSearchParams({
       username: email,
       password: password,
@@ -524,7 +558,10 @@ export class BlinkAuthClient {
       }
     );
 
-    return credentialRes.statusCode;
+    return {
+      statusCode: credentialRes.statusCode,
+      diag: summarizeSigninResponse(credentialRes),
+    };
   }
 
   // --- Auth Code Exchange ---
